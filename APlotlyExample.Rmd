@@ -65,7 +65,7 @@ a <- list(x = x, y = y2,
 plot_ly(data, x = ~x, y = ~y1, type = 'bar', name = 'Total', 
              marker = list(color = 'rgb(49,130,189)')) %>%
   add_trace(y = ~y3, name = 'Survived', marker = list(color = 'rgb(204,204,204)')) %>%
-  layout(tittle = "Titanic passengers and crew by class",
+  layout(title = "Titanic passengers and crew by class",
          xaxis = list(title = "", tickangle = -45), yaxis = list(title = ""),
          margin = list(b = 100), barmode = 'group', annotations = a)
 ```

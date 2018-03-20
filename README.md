@@ -18,7 +18,7 @@ https://www.nist.gov/publications/january-17-1995-hyogoken-nanbu-kobe-earthquake
 
 ## Render de HTML
 
-https://rawgit.com/mpalettan/PlotlyExample/master/PlotlyExample.html
+https://rawgit.com/mpalettan/PlotlyExample/master/APlotlyExample.html
 
 ## Instructions
 

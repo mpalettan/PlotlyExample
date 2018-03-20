@@ -1,0 +1,88 @@
+---
+title: "Plotly Examples"
+author: "Mauricio Paletta"
+date: "March 20, 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+Sys.setlocale("LC_ALL","English")
+```
+
+## Synopsis
+
+This is an R Markdown presentation with a couple of brief examples of using the plotly package. 
+
+
+
+###**`r format(Sys.Date(), "%B %d (%A), %Y")`**
+
+## Example 1: Tinanic
+
+The data used provides information on the fate of passengers on the fatal maiden voyage of the ocean liner 'Titanic', summarized according to economic status (class), sex, age and survival. It is obtained from the following reference:
+
+Dawson, Robert J. MacG. (1995), The 'Unusual Episode' Data Revisited. Journal of Statistics Education, 3.
+
+https://www.amstat.org/publications/jse/v3n3/datasets.dawson.html
+
+
+## Example 1: Tinanic
+
+```{r}
+require(plotly)
+
+Titanic <- read.csv2("C:\\Assignment 14\\titanic.csv")
+Titanic$Id <- 1:nrow(Titanic)
+
+x <- c('Crew', 'First', 'Second', 'Third')
+y1 <- c(nrow(subset(Titanic, Class == 0)), 
+        nrow(subset(Titanic, Class == 1)),
+        nrow(subset(Titanic, Class == 2)),
+        nrow(subset(Titanic, Class == 3)))
+y2 <- c(nrow(subset(Titanic, Class == 0 & Age == 0)), 
+        nrow(subset(Titanic, Class == 1 & Age == 0)),
+        nrow(subset(Titanic, Class == 2 & Age == 0)),
+        nrow(subset(Titanic, Class == 3 & Age == 0)))
+y3 <- c(nrow(subset(Titanic, Class == 0 & Survived == 1)),
+        nrow(subset(Titanic, Class == 1 & Survived == 1)),
+        nrow(subset(Titanic, Class == 2 & Survived == 1)),
+        nrow(subset(Titanic, Class == 3 & Survived == 1)))
+y4 <- c(nrow(subset(Titanic, Class == 0 & Age == 0 & Survived == 1)),
+        nrow(subset(Titanic, Class == 1 & Age == 0 & Survived == 1)),
+        nrow(subset(Titanic, Class == 2 & Age == 0 & Survived == 1)),
+        nrow(subset(Titanic, Class == 3 & Age == 0 & Survived == 1)))
+data <- data.frame(x, y1, y2, y3, y4)
+data$x <- factor(data$x, levels = data[["x"]])
+
+a <- list(x = x, y = y2, 
+          text = c(paste(y2[1], "Childs"), paste(y2[2], "Childs"), 
+                   paste(y2[3], "Childs"), paste(y2[4], "Childs")), 
+          xref = "x", yref = "y", showarrow = TRUE,
+          arrowhead = 7, ax = 20, ay = -40)
+
+plot_ly(data, x = ~x, y = ~y1, type = 'bar', name = 'Total', 
+             marker = list(color = 'rgb(49,130,189)')) %>%
+  add_trace(y = ~y3, name = 'Survived', marker = list(color = 'rgb(204,204,204)')) %>%
+  layout(tittle = "Titanic passengers and crew by class",
+         xaxis = list(title = "", tickangle = -45), yaxis = list(title = ""),
+         margin = list(b = 100), barmode = 'group', annotations = a)
+```
+
+## Example 2: Kobe earthquake
+
+The data used contains the reading of a seismograph in the seconds before, during and after the Great Hanshin earthquake occurred at 5:46 a.m. on Tuesday, January 17, 1995 which struck Kobe, Japan. It had a local magnitude of 7.2 and the duration was about 20 seconds. It was particularly devastating because it had a shallow focus. For more information:
+
+https://www.nist.gov/publications/january-17-1995-hyogoken-nanbu-kobe-earthquake-performance-structures-lifelines-and-0?pub_id=908748
+
+## Example 2: Kobe earthquake
+
+```{r}
+Kobe <- read.table("C:\\Assignment 14\\kobe.txt", header = FALSE)
+xaxis <- list(title = "")
+yaxis <- list(title = "")
+plot_ly(x = ~time(1:nrow(Kobe)), y = ~Kobe$V1, type = "scatter", mode = "lines") %>%
+    layout(title = "The Kobe earthquake seismograph reading", 
+           xaxis = xaxis, yaxis = yaxis)
+```
